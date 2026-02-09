@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .present {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .percentage {
+            font-weight: bold;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Attendance Report</h2>
+    <div class="subtitle">
+        Student‑wise attendance summary
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Total Days</th>
+                <th>Present Days</th>
+                <th>Attendance %</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in data %}
+            <tr>
+                <td>{{ r.name }}</td>
+                <td>{{ r.total }}</td>
+                <td class="present">{{ r.present }}</td>
+                <td class="percentage">{{ r.percentage }}%</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" style="text-align:center; color:#6b7280;">
+                    No attendance data found
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/attendance" class="back">⬅ Back to Attendance</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outstanding Fees</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .amount {
+            font-weight: bold;
+            color: #dc2626;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .low {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+            margin-right: 10px;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+
+        .footer-actions {
+            margin-top: 25px;
+        }
+
+        .footer-actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Outstanding Fees</h2>
+    <div class="subtitle">Student‑wise pending fee balances</div>
+
+    <!-- Filters -->
+    <form method="get" class="filters">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search by student name"
+            value="{{ query or '' }}"
+        >
+
+        <select name="class_id">
+            <option value="">All Classes</option>
+            {% for c in classes %}
+                <option value="{{ c.id }}" {% if c.id == selected_class %}selected{% endif %}>
+                    {{ c.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    {% if outstanding %}
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Class</th>
+                <th>Total Fees</th>
+                <th>Paid</th>
+                <th>Outstanding</th>
+                <th>Priority</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for o in outstanding %}
+            <tr>
+                <td>{{ o.student_name }}</td>
+                <td>{{ o.class_name }}</td>
+                <td>₹ {{ o.total_fees }}</td>
+                <td>₹ {{ o.total_paid }}</td>
+                <td class="amount">₹ {{ o.outstanding_amount }}</td>
+                <td>
+                    {% if o.outstanding_amount >= o.high_threshold %}
+                        <span class="badge high">High</span>
+                    {% elif o.outstanding_amount >= o.medium_threshold %}
+                        <span class="badge medium">Medium</span>
+                    {% else %}
+                        <span class="badge low">Low</span>
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <a href="/fees?student_id={{ o.student_id }}">View Fees</a>
+                    <a href="/fees/add?student_id={{ o.student_id }}">Add Payment</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="empty">No outstanding balances 🎉</div>
+    {% endif %}
+
+    <div class="footer-actions">
+        <a href="/fees/dashboard">← Back to Fees Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>

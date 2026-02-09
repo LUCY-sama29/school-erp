@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Books</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .top-actions input {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            min-width: 220px;
+        }
+
+        .top-actions a {
+            padding: 8px 14px;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .top-actions a:hover {
+            background: #1e40af;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .available {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .unavailable {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+            margin-right: 10px;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Library Books</h2>
+    <div class="subtitle">Manage and view all library books</div>
+
+    <!-- Top actions -->
+    <div class="top-actions">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search by title / author / ISBN"
+            value="{{ query or '' }}"
+        >
+
+        <a href="/books/add">+ Add Book</a>
+    </div>
+
+    {% if books %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>ISBN</th>
+                <th>Available</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for b in books %}
+            <tr>
+                <td>{{ b.title }}</td>
+                <td>{{ b.author }}</td>
+                <td>{{ b.category or "-" }}</td>
+                <td>{{ b.isbn or "-" }}</td>
+                <td>
+                    {% if b.available_copies > 0 %}
+                        <span class="badge available">
+                            {{ b.available_copies }} / {{ b.total_copies }}
+                        </span>
+                    {% else %}
+                        <span class="badge unavailable">Out</span>
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <a href="/books/issue/{{ b.id }}">Issue</a>
+                    <a href="/books/edit/{{ b.id }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="empty">No books found.</div>
+    {% endif %}
+</div>
+
+</body>
+</html>

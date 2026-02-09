@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* Profile header */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .profile-header h3 {
+            margin: 0;
+        }
+
+        .profile-header p {
+            margin: 4px 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Info grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #f9fafb;
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .card h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .item {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .value {
+            color: #111827;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .actions a {
+            padding: 10px 16px;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .actions a.secondary {
+            background: #6b7280;
+        }
+
+        .actions a:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Student Profile</h2>
+    <div class="subtitle">Your personal and academic information</div>
+
+    <!-- Profile header -->
+    <div class="profile-header">
+        <div class="avatar">
+            {{ student.name[0] }}
+        </div>
+        <div>
+            <h3>{{ student.name }}</h3>
+            <p>Admission No: {{ student.admission_no }}</p>
+            <p>Class {{ student.class_name }}{% if student.section %} - {{ student.section }}{% endif %}</p>
+        </div>
+    </div>
+
+    <!-- Information -->
+    <div class="grid">
+        <div class="card">
+            <h4>Personal Details</h4>
+            <div class="item">
+                <span class="label">Roll No:</span>
+                <span class="value">{{ student.roll_no or "-" }}</span>
+            </div>
+            <div class="item">
+                <span class="label">Date of Birth:</span>
+                <span class="value">{{ student.dob or "-" }}</span>
+            </div>
+            <div class="item">
+                <span class="label">Gender:</span>
+                <span class="value">{{ student.gender or "-" }}</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h4>Parent Details</h4>
+            <div class="item">
+                <span class="label">Parent Name:</span>
+                <span class="value">{{ student.parent_name or "-" }}</span>
+            </div>
+            <div class="item">
+                <span class="label">Contact:</span>
+                <span class="value">{{ student.parent_phone or "-" }}</span>
+            </div>
+            <div class="item">
+                <span class="label">Email:</span>
+                <span class="value">{{ student.parent_email or "-" }}</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h4>Account Details</h4>
+            <div class="item">
+                <span class="label">Username:</span>
+                <span class="value">{{ student.username }}</span>
+            </div>
+            <div class="item">
+                <span class="label">Status:</span>
+                <span class="value">{{ student.status }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="actions">
+        <a href="/dashboard/student">← Back to Dashboard</a>
+        <a href="/change-password" class="secondary">Change Password</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .row > div {
+            flex: 1;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        a:hover {
+            background: #d1d5db;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Add Book</h2>
+
+    <form method="post">
+
+        <label>Book Title</label>
+        <input type="text" name="title" placeholder="Enter book title" required>
+
+        <label>Author</label>
+        <input type="text" name="author" placeholder="Author name" required>
+
+        <div class="row">
+            <div>
+                <label>Category</label>
+                <input type="text" name="category" placeholder="e.g. Science, Math">
+            </div>
+
+            <div>
+                <label>ISBN</label>
+                <input type="text" name="isbn" placeholder="ISBN number">
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Total Copies</label>
+                <input type="number" name="total_copies" min="1" placeholder="e.g. 10" required>
+            </div>
+
+            <div>
+                <label>Shelf / Rack</label>
+                <input type="text" name="shelf" placeholder="Optional">
+            </div>
+        </div>
+
+        <label>Description (optional)</label>
+        <textarea
+            name="description"
+            rows="3"
+            placeholder="Short description about the book"
+        ></textarea>
+
+        <div class="actions">
+            <button type="submit">Save Book</button>
+            <a href="/books">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .card a {
+            display: inline-block;
+            padding: 8px 14px;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .card a:hover {
+            background: #1e40af;
+        }
+
+        form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            background: #16a34a;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #15803d;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Attendance</h2>
+    <div class="subtitle">Manage and review student attendance</div>
+
+    <!-- Quick Actions -->
+    <div class="card-grid">
+        <div class="card">
+            <h3>Mark Attendance</h3>
+            <p>Mark attendance for today using class roster</p>
+            <a href="/attendance/roster">Go</a>
+        </div>
+
+        <div class="card">
+            <h3>Attendance History</h3>
+            <p>View or edit attendance from previous days</p>
+            <a href="/attendance/history">View</a>
+        </div>
+
+        <div class="card">
+            <h3>Monthly Report</h3>
+            <p>View monthly attendance summary</p>
+            <a href="/attendance/monthly">Open</a>
+        </div>
+    </div>
+
+    <!-- Direct Mark Form -->
+    <form method="get" action="/attendance/roster">
+        <label>Select Class</label>
+        <select name="class_id" required>
+            <option value="">-- Select Class --</option>
+            {% for c in classes %}
+                <option value="{{ c.id }}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Date</label>
+        <input type="date" name="date" value="{{ date | default('') }}" required>
+
+        <div class="actions">
+            <button type="submit">Proceed to Mark Attendance</button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

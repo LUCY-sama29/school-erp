@@ -1,0 +1,91 @@
+.characters {
+  position: absolute;
+  left: 0;
+  width: 50%;
+  height: 100%;
+}
+
+/* SHAPES */
+.shape {
+  position: absolute;
+}
+
+.orange {
+  width: 180px;
+  height: 180px;
+  background: #ff8a2a;
+  border-radius: 50%;
+  bottom: 90px;
+  left: 90px;
+}
+
+.blue {
+  width: 110px;
+  height: 240px;
+  background: #5b5cf6;
+  border-radius: 14px;
+  top: 120px;
+  left: 180px;
+}
+
+.black {
+  width: 70px;
+  height: 200px;
+  background: #111;
+  border-radius: 14px;
+  top: 140px;
+  left: 330px;
+}
+
+.face {
+  position: relative;
+}
+
+.eye {
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 30px;
+}
+
+.eye.left { left: 22px; }
+.eye.right { right: 22px; }
+
+.mouth {
+  width: 18px;
+  height: 4px;
+  background: white;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.3s ease;
+}
+
+/* EMOTIONS */
+.mouth.happy {
+  height: 8px;
+  border-radius: 0 0 20px 20px;
+}
+
+.mouth.password {
+  width: 8px;
+}
+
+.mouth.error {
+  transform: translateX(-50%) rotate(180deg);
+}
+
+.hands {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50px;
+  height: 20px;
+  background: #222;
+  border-radius: 20px;
+  transform: translateX(-50%);
+}

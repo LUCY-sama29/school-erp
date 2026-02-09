@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Fees</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .amount {
+            font-weight: bold;
+            color: #dc2626;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .unpaid {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .partial {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+            margin-right: 10px;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+
+        .footer-actions {
+            margin-top: 25px;
+        }
+
+        .footer-actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Pending Fees</h2>
+    <div class="subtitle">Students with unpaid or partially paid fees</div>
+
+    <!-- Filters -->
+    <form method="get" class="filters">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search by student name"
+            value="{{ query or '' }}"
+        >
+
+        <select name="class_id">
+            <option value="">All Classes</option>
+            {% for c in classes %}
+                <option value="{{ c.id }}" {% if c.id == selected_class %}selected{% endif %}>
+                    {{ c.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    {% if dues %}
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Class</th>
+                <th>Fee Title</th>
+                <th>Amount Due</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for d in dues %}
+            <tr>
+                <td>{{ d.student_name }}</td>
+                <td>{{ d.class_name }}</td>
+                <td>{{ d.fee_title }}</td>
+                <td class="amount">₹ {{ d.amount_due }}</td>
+                <td>
+                    {% if d.status == 'unpaid' %}
+                        <span class="badge unpaid">Unpaid</span>
+                    {% else %}
+                        <span class="badge partial">Partial</span>
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <a href="/fees/{{ d.fee_id }}">View</a>
+                    <a href="/fees/pay/{{ d.fee_id }}">Pay</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="empty">No pending fees found 🎉</div>
+    {% endif %}
+
+    <div class="footer-actions">
+        <a href="/fees/dashboard">← Back to Fees Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>

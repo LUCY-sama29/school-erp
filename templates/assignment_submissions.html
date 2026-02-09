@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Submissions</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .submitted {
+            color: #16a34a;
+        }
+
+        .pending {
+            color: #dc2626;
+        }
+
+        input[type="number"], textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        .back {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Assignment Submissions</h2>
+
+    {% if submissions %}
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Submitted At</th>
+                <th>Submission</th>
+                <th>Marks</th>
+                <th>Remarks</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for s in submissions %}
+            <tr>
+                <td>{{ s.student_name }}</td>
+                <td>{{ s.submitted_at or "-" }}</td>
+                <td>
+                    {% if s.submission_text %}
+                        {{ s.submission_text }}
+                    {% else %}
+                        <span class="status pending">Not Submitted</span>
+                    {% endif %}
+                </td>
+
+                <form method="post">
+                    <td>
+                        <input
+                            type="number"
+                            name="marks"
+                            value="{{ s.marks or '' }}"
+                            min="0"
+                            max="100"
+                        >
+                    </td>
+                    <td>
+                        <textarea
+                            name="remarks"
+                            rows="2"
+                            placeholder="Optional"
+                        >{{ s.remarks or '' }}</textarea>
+                    </td>
+                    <td>
+                        <input type="hidden" name="submission_id" value="{{ s.id }}">
+                        <button type="submit">Save</button>
+                    </td>
+                </form>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="text-align:center;">No submissions found.</p>
+    {% endif %}
+
+    <div class="back">
+        <a href="/assignments">← Back to Assignments</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Attendance</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filters select,
+        .filters input {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .present {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .absent {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .leave {
+            color: #ca8a04;
+            font-weight: bold;
+        }
+
+        .summary {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .summary div {
+            background: #f9fafb;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Monthly Attendance</h2>
+    <div class="subtitle">Overview of attendance for the selected month</div>
+
+    <!-- Filters -->
+    <form method="get" class="filters">
+        <select name="class_id" required>
+            {% for c in classes %}
+                <option value="{{ c.id }}" {% if c.id == selected_class %}selected{% endif %}>
+                    {{ c.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="month" name="month" value="{{ selected_month }}">
+
+        <button type="submit">View</button>
+    </form>
+
+    {% if students %}
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Present</th>
+                <th>Absent</th>
+                <th>Leave</th>
+                <th>Total Days</th>
+                <th>Attendance %</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for s in students %}
+            <tr>
+                <td style="text-align:left;">{{ s.name }}</td>
+                <td class="present">{{ s.present }}</td>
+                <td class="absent">{{ s.absent }}</td>
+                <td class="leave">{{ s.leave }}</td>
+                <td>{{ s.total_days }}</td>
+                <td>{{ s.percentage }}%</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Class summary -->
+    <div class="summary">
+        <div><strong>Month:</strong> {{ selected_month }}</div>
+        <div><strong>Working Days:</strong> {{ working_days }}</div>
+        <div><strong>Class Average:</strong> {{ class_average }}%</div>
+    </div>
+
+    {% else %}
+        <div class="empty">No attendance data available for this month.</div>
+    {% endif %}
+
+    <div class="actions">
+        <a href="/attendance">← Back to Attendance</a>
+        <a href="/attendance/history">View Daily History</a>
+    </div>
+</div>
+
+</body>
+</html>

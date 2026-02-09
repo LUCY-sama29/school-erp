@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Homework</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .row > div {
+            flex: 1;
+        }
+
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        a:hover {
+            background: #d1d5db;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Add Homework</h2>
+
+    <form method="post">
+
+        <label>Class</label>
+        <select name="class_id" required>
+            <option value="">-- Select Class --</option>
+            {% for c in classes %}
+                <option value="{{ c.id }}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
+
+        <div class="row">
+            <div>
+                <label>Subject</label>
+                <input
+                    type="text"
+                    name="subject"
+                    placeholder="e.g. Mathematics"
+                    required
+                >
+            </div>
+
+            <div>
+                <label>Due Date</label>
+                <input
+                    type="date"
+                    name="due_date"
+                    required
+                >
+            </div>
+        </div>
+
+        <label>Homework Title</label>
+        <input
+            type="text"
+            name="title"
+            placeholder="e.g. Chapter 5 Practice"
+            required
+        >
+
+        <label>Description</label>
+        <textarea
+            name="description"
+            rows="4"
+            placeholder="Write homework instructions clearly"
+            required
+        ></textarea>
+
+        <label>Attachment (optional)</label>
+        <input type="file" name="attachment">
+
+        <div class="actions">
+            <button type="submit">Assign Homework</button>
+            <a href="/homework">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Assignment</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .info {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        a:hover {
+            background: #d1d5db;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Submit Assignment</h2>
+    <div class="subtitle">Make sure your work is complete before submitting</div>
+
+    <!-- Assignment Info -->
+    <div class="info">
+        <strong>Assignment:</strong> {{ assignment.title }} <br>
+        <strong>Due Date:</strong> {{ assignment.due_date }} <br>
+        <strong>Description:</strong><br>
+        {{ assignment.description }}
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+
+        <label>Written Answer (optional)</label>
+        <textarea
+            name="submission_text"
+            rows="5"
+            placeholder="Type your answer here if required"
+        ></textarea>
+
+        <label>Upload File (PDF / Image)</label>
+        <input
+            type="file"
+            name="submission_file"
+            accept=".pdf,.jpg,.jpeg,.png"
+        >
+        <div class="note">
+            Allowed formats: PDF, JPG, PNG (Max size depends on server settings)
+        </div>
+
+        <div class="actions">
+            <button type="submit">Submit Assignment</button>
+            <a href="/assignments">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Attendance</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .top-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        select {
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+
+        .present {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .absent {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .leave {
+            color: #ca8a04;
+            font-weight: bold;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        a:hover {
+            background: #d1d5db;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Edit Attendance</h2>
+    <div class="subtitle">Update attendance for the selected date</div>
+
+    <div class="top-info">
+        <div><strong>Class:</strong> {{ class_name }}</div>
+        <div><strong>Date:</strong> {{ date }}</div>
+    </div>
+
+    <form method="post">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for s in students %}
+                <tr>
+                    <td>{{ s.name }}</td>
+                    <td>
+                        <select name="status_{{ s.id }}">
+                            <option value="Present" {% if s.status == 'Present' %}selected{% endif %}>Present</option>
+                            <option value="Absent" {% if s.status == 'Absent' %}selected{% endif %}>Absent</option>
+                            <option value="Leave" {% if s.status == 'Leave' %}selected{% endif %}>Leave</option>
+                        </select>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <button type="submit">Save Changes</button>
+            <a href="/attendance">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f4f6f9;
+            color: #111827;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin-top: 6px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 28px;
+            color: #2563eb;
+        }
+
+        .stat-card p {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Grid cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card p {
+            margin: 0 0 18px;
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .card a {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .card a:hover {
+            background: #1e40af;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h2>Welcome, {{ student.name if student else "Student" }}</h2>
+        <p>
+            Class: {{ student.class_name if student else "-" }}
+            {% if student.section %} • Section {{ student.section }}{% endif %}
+        </p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+        <div class="stat-card">
+            <h3>{{ stats.attendance or 0 }}%</h3>
+            <p>Attendance</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ stats.assignments or 0 }}</h3>
+            <p>Total Assignments</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ stats.completed or 0 }}</h3>
+            <p>Completed</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ stats.pending or 0 }}</h3>
+            <p>Pending</p>
+        </div>
+    </div>
+
+    <!-- Main actions -->
+    <div class="grid">
+
+        <div class="card">
+            <h3>📄 Report Card</h3>
+            <p>
+                View and download your academic report card with grades and performance summary.
+            </p>
+            <a href="/reports/{{ student.id }}">View Report Card</a>
+        </div>
+
+        <div class="card">
+            <h3>📊 Attendance</h3>
+            <p>
+                Check your daily and monthly attendance records and percentage.
+            </p>
+            <a href="/attendance/history">View Attendance</a>
+        </div>
+
+        <div class="card">
+            <h3>🏆 Marks & Results</h3>
+            <p>
+                See marks given by teachers for assignments and exams.
+            </p>
+            <a href="/marks">View Marks</a>
+        </div>
+
+        <div class="card">
+            <h3>📚 Assignments</h3>
+            <p>
+                View assigned homework, submission status, and remarks.
+            </p>
+            <a href="/assignments">View Assignments</a>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © {{ year or "2026" }} School Management System
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fees</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* Top actions */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .top-bar input,
+        .top-bar select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .top-bar a {
+            padding: 8px 14px;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .top-bar a:hover {
+            background: #1e40af;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .paid {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .unpaid {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+            margin-right: 10px;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+
+        .footer-actions {
+            margin-top: 25px;
+        }
+
+        .footer-actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Fees</h2>
+    <div class="subtitle">All student fee records</div>
+
+    <!-- Filters & actions -->
+    <form method="get" class="top-bar">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search student"
+            value="{{ query or '' }}"
+        >
+
+        <select name="class_id">
+            <option value="">All Classes</option>
+            {% for c in classes %}
+                <option value="{{ c.id }}" {% if c.id == selected_class %}selected{% endif %}>
+                    {{ c.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="paid" {% if status == 'paid' %}selected{% endif %}>Paid</option>
+            <option value="unpaid" {% if status == 'unpaid' %}selected{% endif %}>Unpaid</option>
+        </select>
+
+        <button type="submit">Filter</button>
+
+        <a href="/fees/add">+ Add Fee</a>
+    </form>
+
+    {% if fees %}
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Student</th>
+                <th>Class</th>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for f in fees %}
+            <tr>
+                <td>{{ f.date }}</td>
+                <td>{{ f.student_name }}</td>
+                <td>{{ f.class_name }}</td>
+                <td>{{ f.title }}</td>
+                <td>₹ {{ f.amount }}</td>
+                <td>
+                    {% if f.status == 'paid' %}
+                        <span class="paid">Paid</span>
+                    {% else %}
+                        <span class="unpaid">Unpaid</span>
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <a href="/fees/{{ f.id }}">View</a>
+                    {% if f.status != 'paid' %}
+                        <a href="/fees/pay/{{ f.id }}">Pay</a>
+                    {% endif %}
+                    <a href="/fees/receipt_full/{{ f.id }}">Receipt</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="empty">No fee records found.</div>
+    {% endif %}
+
+    <div class="footer-actions">
+        <a href="/fees/dashboard">← Back to Fees Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>

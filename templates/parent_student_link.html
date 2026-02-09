@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Parent & Student</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .students {
+            margin-top: 10px;
+        }
+
+        .students label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .students input {
+            margin-right: 8px;
+        }
+
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        a:hover {
+            background: #d1d5db;
+        }
+
+        .note {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Link Parent & Student</h2>
+    <div class="subtitle">Assign one or more students to a parent account</div>
+
+    <form method="post">
+
+        <label>Select Parent</label>
+        <select name="parent_id" required>
+            <option value="">-- Select Parent --</option>
+            {% for p in parents %}
+                <option value="{{ p.id }}">
+                    {{ p.name }} ({{ p.email }})
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Select Student(s)</label>
+        <div class="students">
+            {% for s in students %}
+                <label>
+                    <input
+                        type="checkbox"
+                        name="student_ids"
+                        value="{{ s.id }}"
+                    >
+                    {{ s.name }} (Class {{ s.class_name }})
+                </label>
+            {% endfor %}
+        </div>
+
+        <div class="note">
+            A parent can be linked to multiple students (siblings).
+        </div>
+
+        <div class="actions">
+            <button type="submit">Save Link</button>
+            <a href="/parents">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

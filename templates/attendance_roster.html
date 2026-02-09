@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Roster</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        h2 { text-align: center; }
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        .top-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        th { background: #f9fafb; }
+        .name { text-align: left; font-weight: 600; }
+
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .present { color: #16a34a; font-weight: bold; }
+        .absent { color: #dc2626; font-weight: bold; }
+        .leave { color: #ca8a04; font-weight: bold; }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+        }
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Attendance Roster</h2>
+    <div class="subtitle">Mark attendance</div>
+
+    <div class="top-info">
+        <div><strong>Class ID:</strong> {{ class_selected }}</div>
+        <div><strong>Date:</strong> {{ date_selected }}</div>
+    </div>
+
+    <form method="post">
+
+        <!-- REQUIRED HIDDEN FIELDS -->
+        <input type="hidden" name="class_id" value="{{ class_selected }}">
+        <input type="hidden" name="date" value="{{ date_selected }}">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for s in students %}
+            {% set a = att_map.get(s.id) %}
+                <tr>
+                    <td class="name">{{ s.name }}</td>
+                    <td>
+                        <div class="radio-group">
+
+                            <label class="present">
+                                <input type="radio"
+                                       name="status_{{ s.id }}"
+                                       value="Present"
+                                       {% if a and a.status == 'Present' %}checked{% endif %}>
+                                Present
+                            </label>
+
+                            <label class="absent">
+                                <input type="radio"
+                                       name="status_{{ s.id }}"
+                                       value="Absent"
+                                       {% if a and a.status == 'Absent' %}checked{% endif %}>
+                                Absent
+                            </label>
+
+                            <label class="leave">
+                                <input type="radio"
+                                       name="status_{{ s.id }}"
+                                       value="Leave"
+                                       {% if a and a.status == 'Leave' %}checked{% endif %}>
+                                Leave
+                            </label>
+
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <button type="submit">Save Attendance</button>
+            <a href="/attendance">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

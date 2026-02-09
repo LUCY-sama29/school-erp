@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .row > div {
+            flex: 1;
+        }
+
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        a:hover {
+            background: #d1d5db;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Edit Student</h2>
+
+    <form method="post">
+
+        <label>Student Name</label>
+        <input
+            type="text"
+            name="name"
+            value="{{ student.name }}"
+            required
+        >
+
+        <div class="row">
+            <div>
+                <label>Admission No</label>
+                <input
+                    type="text"
+                    name="admission_no"
+                    value="{{ student.admission_no }}"
+                >
+            </div>
+
+            <div>
+                <label>Roll No</label>
+                <input
+                    type="text"
+                    name="roll_no"
+                    value="{{ student.roll_no }}"
+                >
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Class</label>
+                <select name="class_id" required>
+                    {% for c in classes %}
+                        <option
+                            value="{{ c.id }}"
+                            {% if c.id == student.class_id %}selected{% endif %}
+                        >
+                            {{ c.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label>Section</label>
+                <input
+                    type="text"
+                    name="section"
+                    value="{{ student.section or '' }}"
+                >
+            </div>
+        </div>
+
+        <label>Parent Name</label>
+        <input
+            type="text"
+            name="parent_name"
+            value="{{ student.parent_name }}"
+        >
+
+        <label>Parent Contact</label>
+        <input
+            type="text"
+            name="parent_phone"
+            value="{{ student.parent_phone }}"
+        >
+
+        <div class="actions">
+            <button type="submit">Update Student</button>
+            <a href="/students">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

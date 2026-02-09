@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit User</title>
+</head>
+<body>
+
+<h2>Edit User</h2>
+
+<form method="post">
+    <label>Username</label><br>
+    <input type="text" name="username" value="{{ user.username }}" required><br><br>
+
+    <label>Role</label><br>
+    <select name="role">
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+        <option value="parent">Parent</option>
+        <option value="admin">Admin</option>
+    </select><br><br>
+
+    <button type="submit">Save</button>
+    <a href="/users">Cancel</a>
+</form>
+
+</body>
+</html>

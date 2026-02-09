@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .row > div {
+            flex: 1;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        a:hover {
+            background: #d1d5db;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Add Student</h2>
+
+    <form method="post">
+
+        <label>Student Name</label>
+        <input type="text" name="name" placeholder="Full name" required>
+
+        <div class="row">
+            <div>
+                <label>Class</label>
+                <select name="class_id" required>
+                    <option value="">-- Select Class --</option>
+                    {% for c in classes %}
+                        <option value="{{ c.id }}">
+                            Class {{ c.name }} {{ c.section }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+            </div>
+
+            <div>
+                <label>Roll Number</label>
+                <input type="text" name="roll_no" placeholder="Optional">
+            </div>
+        </div>
+
+        <label>Parent Name</label>
+        <input type="text" name="parent_name" placeholder="Parent / Guardian name">
+
+        <label>Parent Phone</label>
+        <input type="text" name="parent_phone" placeholder="+91XXXXXXXXXX">
+
+        <label>Date of Birth</label>
+        <input type="date" name="dob">
+
+        <div class="actions">
+            <button type="submit">Save Student</button>
+            <a href="/students">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

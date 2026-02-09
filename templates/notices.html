@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notices</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .top-bar input,
+        .top-bar select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .top-bar a {
+            padding: 8px 14px;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .top-bar a:hover {
+            background: #1e40af;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .all {
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        .students {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .parents {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .teachers {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+            margin-right: 10px;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Notices</h2>
+    <div class="subtitle">School announcements and notices</div>
+
+    <!-- Filters & actions -->
+    <form method="get" class="top-bar">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search notice title"
+            value="{{ query or '' }}"
+        >
+
+        <select name="audience">
+            <option value="">All Audiences</option>
+            <option value="all" {% if audience == 'all' %}selected{% endif %}>All</option>
+            <option value="students" {% if audience == 'students' %}selected{% endif %}>Students</option>
+            <option value="parents" {% if audience == 'parents' %}selected{% endif %}>Parents</option>
+            <option value="teachers" {% if audience == 'teachers' %}selected{% endif %}>Teachers</option>
+        </select>
+
+        <button type="submit">Filter</button>
+
+        {% if can_add %}
+            <a href="/notices/add">+ Add Notice</a>
+        {% endif %}
+    </form>
+
+    {% if notices %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Audience</th>
+                <th>Publish Date</th>
+                <th>Attachment</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for n in notices %}
+            <tr>
+                <td>{{ n.title }}</td>
+                <td>
+                    <span class="badge {{ n.audience }}">
+                        {{ n.audience|capitalize }}
+                    </span>
+                </td>
+                <td>{{ n.publish_date }}</td>
+                <td>
+                    {% if n.attachment %}
+                        <a href="{{ n.attachment }}">Download</a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <a href="/notices/{{ n.id }}">View</a>
+
+                    {% if can_edit %}
+                        <a href="/notices/edit/{{ n.id }}">Edit</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="empty">No notices found.</div>
+    {% endif %}
+</div>
+
+</body>
+</html>

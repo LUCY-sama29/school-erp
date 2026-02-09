@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* Student selector */
+        .student-bar {
+            margin-bottom: 20px;
+        }
+
+        .student-bar select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        /* Summary cards */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #f9fafb;
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .card .value {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .card .label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .present {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .absent {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .leave {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+
+        .footer-actions {
+            margin-top: 25px;
+        }
+
+        .footer-actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Attendance</h2>
+    <div class="subtitle">View your child’s attendance record</div>
+
+    <!-- Student selector -->
+    <form method="get" class="student-bar">
+        <select name="student_id" onchange="this.form.submit()">
+            {% for c in children %}
+                <option value="{{ c.id }}" {% if c.id == selected_student %}selected{% endif %}>
+                    {{ c.name }} (Class {{ c.class_name }})
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- Summary -->
+    <div class="summary">
+        <div class="card">
+            <div class="value">{{ summary.present }}</div>
+            <div class="label">Present Days</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ summary.absent }}</div>
+            <div class="label">Absent Days</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ summary.leave }}</div>
+            <div class="label">Leave Days</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ summary.percentage }}%</div>
+            <div class="label">Attendance %</div>
+        </div>
+    </div>
+
+    {% if attendance %}
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for a in attendance %}
+            <tr>
+                <td>{{ a.date }}</td>
+                <td>
+                    {% if a.status == 'Present' %}
+                        <span class="badge present">Present</span>
+                    {% elif a.status == 'Absent' %}
+                        <span class="badge absent">Absent</span>
+                    {% else %}
+                        <span class="badge leave">Leave</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="empty">No attendance records found.</div>
+    {% endif %}
+
+    <div class="footer-actions">
+        <a href="/dashboard/parent">← Back to Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>

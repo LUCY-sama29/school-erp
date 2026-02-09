@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .term {
+            background: #e0e7ff;
+            color: #1e40af;
+        }
+
+        .due {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .actions a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #1e40af;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Assignments</h2>
+
+    <!-- Top actions (teacher/admin) -->
+    {% if can_add %}
+    <div class="top-actions">
+        <div></div>
+        <a href="/assignments/add" class="add-btn">+ Add Assignment</a>
+    </div>
+    {% endif %}
+
+    {% if assignments %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Class</th>
+                <th>Term</th>
+                <th>Due Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for a in assignments %}
+            <tr>
+                <td>{{ a.title }}</td>
+                <td>{{ a.class_name }}</td>
+                <td>
+                    <span class="badge term">{{ a.term }}</span>
+                </td>
+                <td>
+                    {% if a.is_overdue %}
+                        <span class="due">{{ a.due_date }}</span>
+                    {% else %}
+                        {{ a.due_date }}
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    {% if role == "student" %}
+                        <a href="/assignments/submit/{{ a.id }}">Submit</a>
+                    {% elif role == "teacher" %}
+                        <a href="/assignments/{{ a.id }}/submissions">View Submissions</a>
+                    {% else %}
+                        <a href="/assignments/{{ a.id }}">View</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="empty">No assignments available.</div>
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Fee</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        a:hover {
+            background: #d1d5db;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Add Student Fee</h2>
+
+    <form method="post">
+
+        <label>Student</label>
+        <select name="student_id" required>
+            <option value="">-- Select Student --</option>
+            {% for s in students %}
+                <option value="{{ s.id }}">
+                    {{ s.name }} (Class {{ s.class or s.class_name }})
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Amount (₹)</label>
+        <input type="text" name="amount" placeholder="e.g. 2500" required>
+
+        <label>Payment Status</label>
+        <select name="status" id="statusSelect">
+            <option value="unpaid">Unpaid</option>
+            <option value="paid">Paid</option>
+        </select>
+
+        <div id="paidOnBox" class="hidden">
+            <label>Paid On</label>
+            <input type="date" name="paid_on">
+        </div>
+
+        <label>Note (optional)</label>
+        <textarea name="note" rows="3" placeholder="Any remark about this fee..."></textarea>
+
+        <div class="actions">
+            <button type="submit">Save Fee</button>
+            <a href="/fees">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    const statusSelect = document.getElementById("statusSelect");
+    const paidOnBox = document.getElementById("paidOnBox");
+
+    statusSelect.addEventListener("change", function () {
+        paidOnBox.classList.toggle("hidden", this.value !== "paid");
+    });
+</script>
+
+</body>
+</html>
