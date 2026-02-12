@@ -607,7 +607,6 @@ def add_student():
     conn.close()
     return render_template("add_student.html", classes=classes)
 
-
 @app.route("/students/edit/<int:student_id>", methods=["GET", "POST"])
 def edit_student(student_id):
     if "user" not in session:
