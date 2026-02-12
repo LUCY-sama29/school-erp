@@ -1,137 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Student</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Student</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-        }
+<style>
+    body{
+        margin:0;
+        font-family: "Segoe UI", Arial;
+        background: linear-gradient(135deg,#eef2ff,#f9fafb);
+    }
 
-        .container {
-            max-width: 650px;
-            margin: 50px auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-        }
+    .wrapper{
+        max-width:760px;
+        margin:60px auto;
+        background:white;
+        padding:40px;
+        border-radius:14px;
+        box-shadow:0 20px 40px rgba(0,0,0,0.08);
+    }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+    h2{
+        text-align:center;
+        margin-bottom:30px;
+        color:#111827;
+        letter-spacing:.5px;
+    }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-        }
+    label{
+        font-weight:600;
+        margin-top:18px;
+        display:block;
+        color:#374151;
+    }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+    input, select{
+        width:100%;
+        padding:12px;
+        margin-top:6px;
+        border-radius:8px;
+        border:1px solid #d1d5db;
+        font-size:14px;
+        transition:.2s;
+    }
 
-        .row {
-            display: flex;
-            gap: 15px;
-        }
+    input:focus, select:focus{
+        border-color:#2563eb;
+        outline:none;
+        box-shadow:0 0 0 2px rgba(37,99,235,.15);
+    }
 
-        .row > div {
-            flex: 1;
-        }
+    .grid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:18px;
+    }
 
-        .actions {
-            margin-top: 25px;
-            display: flex;
-            gap: 10px;
-        }
+    .photo-box{
+        margin-top:18px;
+        padding:20px;
+        border:2px dashed #d1d5db;
+        border-radius:10px;
+        text-align:center;
+        background:#f9fafb;
+    }
 
-        button, a {
-            flex: 1;
-            padding: 10px;
-            border-radius: 6px;
-            border: none;
-            text-align: center;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .actions{
+        margin-top:35px;
+        display:flex;
+        gap:12px;
+    }
 
-        button {
-            background: #2563eb;
-            color: white;
-        }
+    button, .cancel{
+        flex:1;
+        padding:13px;
+        border-radius:10px;
+        border:none;
+        font-weight:600;
+        cursor:pointer;
+        text-decoration:none;
+        text-align:center;
+    }
 
-        button:hover {
-            background: #1e40af;
-        }
+    button{
+        background:linear-gradient(135deg,#2563eb,#1e40af);
+        color:white;
+    }
 
-        a {
-            background: #e5e7eb;
-            color: #111827;
-        }
+    button:hover{
+        transform:translateY(-1px);
+        box-shadow:0 8px 18px rgba(37,99,235,.25);
+    }
 
-        a:hover {
-            background: #d1d5db;
+    .cancel{
+        background:#e5e7eb;
+        color:#111827;
+    }
+
+    .cancel:hover{
+        background:#d1d5db;
+    }
+
+    @media(max-width:650px){
+        .grid{
+            grid-template-columns:1fr;
         }
-    </style>
+    }
+</style>
 </head>
 
 <body>
 
-<div class="container">
-    <h2>Add Student</h2>
+<div class="wrapper">
+<h2>➕ Add New Student</h2>
 
-    <form method="post">
+<form method="POST" enctype="multipart/form-data">
 
-        <label>Student Name</label>
-        <input type="text" name="name" placeholder="Full name" required>
+<label>Student Name</label>
+<input type="text" name="name" placeholder="Full name" required>
 
-        <div class="row">
-            <div>
-                <label>Class</label>
-                <select name="class_id" required>
-                    <option value="">-- Select Class --</option>
-                    {% for c in classes %}
-                        <option value="{{ c.id }}">
-                            Class {{ c.name }} {{ c.section }}
-                        </option>
-                    {% endfor %}
-                </select>
+<div class="grid">
+    <div>
+        <label>Class</label>
+        <select name="class_id" required>
+            <option value="">-- Select Class --</option>
+            {% for c in classes %}
+            <option value="{{ c.id }}">
+                Class {{ c.name }} {{ c.section }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
 
-            </div>
+    <div>
+        <label>Roll Number</label>
+        <input type="text" name="roll_no" placeholder="Optional">
+    </div>
+</div>
 
-            <div>
-                <label>Roll Number</label>
-                <input type="text" name="roll_no" placeholder="Optional">
-            </div>
-        </div>
+<label>Parent Name</label>
+<input type="text" name="parent_name" placeholder="Parent / Guardian name">
 
-        <label>Parent Name</label>
-        <input type="text" name="parent_name" placeholder="Parent / Guardian name">
+<label>Parent Phone</label>
+<input type="text" name="parent_phone" placeholder="+91XXXXXXXXXX">
 
-        <label>Parent Phone</label>
-        <input type="text" name="parent_phone" placeholder="+91XXXXXXXXXX">
+<label>Date of Birth</label>
+<input type="date" name="dob">
 
-        <label>Date of Birth</label>
-        <input type="date" name="dob">
+<div class="photo-box">
+    <label>Upload Student Photo</label>
+    <input type="file" name="photo" accept="image/*">
+</div>
 
-        <div class="actions">
-            <button type="submit">Save Student</button>
-            <a href="/students">Cancel</a>
-        </div>
+<div class="actions">
+    <button type="submit">Save Student</button>
+    <a href="/students" class="cancel">Cancel</a>
+</div>
 
-    </form>
+</form>
 </div>
 
 </body>
