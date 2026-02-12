@@ -1,33 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student Details</title>
+    <meta charset="UTF-8">
+    <title>Student Profile</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f5f6fa;
+            margin:0;
+            padding:40px;
+        }
+
+        .container{
+            max-width:900px;
+            margin:auto;
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h2{
+            margin-bottom:20px;
+        }
+
+        .profile{
+            display:flex;
+            gap:30px;
+            align-items:flex-start;
+        }
+
+        .photo{
+            width:160px;
+            height:160px;
+            border-radius:8px;
+            object-fit:cover;
+            border:1px solid #ddd;
+        }
+
+        .info{
+            flex:1;
+        }
+
+        .info p{
+            margin:8px 0;
+            font-size:15px;
+        }
+
+        .label{
+            font-weight:bold;
+            color:#333;
+        }
+
+        .actions{
+            margin-top:25px;
+        }
+
+        .btn{
+            padding:10px 18px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            text-decoration:none;
+            margin-right:10px;
+        }
+
+        .edit{
+            background:#4CAF50;
+            color:white;
+        }
+
+        .back{
+            background:#6c757d;
+            color:white;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Student Details</h2>
+<div class="container">
+    <h2>Student Details</h2>
 
-<p><strong>Name:</strong> {{ student.name }}</p>
-<p><strong>Class:</strong>
-    {% if student.class_name %}
-        {{ student.class_name }} {{ student.section }}
-    {% else %}
-        Not assigned
-    {% endif %}
-</p>
+    <div class="profile">
+        <img src="{{ student.photo or url_for('static', filename='default.png') }}" class="photo">
 
-<p><strong>DOB:</strong> {{ student.dob }}</p>
-<p><strong>Phone:</strong> {{ student.phone }}</p>
-<p><strong>Parent:</strong> {{ student.parent_name }}</p>
-<p><strong>Parent Phone:</strong> {{ student.parent_phone }}</p>
-<p><strong>Address:</strong> {{ student.address }}</p>
+        <div class="info">
+            <p><span class="label">Name:</span> {{ student.name }}</p>
+            <p><span class="label">Date of Birth:</span> {{ student.dob }}</p>
+            <p><span class="label">Class:</span> {{ student.class_name }}</p>
+            <p><span class="label">Parent Name:</span> {{ student.parent_name }}</p>
+            <p><span class="label">Phone:</span> {{ student.phone }}</p>
+            <p><span class="label">Parent Phone:</span> {{ student.parent_phone }}</p>
+            <p><span class="label">Address:</span> {{ student.address }}</p>
+        </div>
+    </div>
 
-{% if student.photo %}
-    <img src="/uploads/{{ student.photo }}" width="150">
-{% endif %}
-
-<br><br>
-<a href="/students">⬅ Back to Students</a>
+    <div class="actions">
+        <a href="/students" class="btn back">Back</a>
+        <a href="/students/edit/{{ student.id }}" class="btn edit">Edit</a>
+    </div>
+</div>
 
 </body>
 </html>
