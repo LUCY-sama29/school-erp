@@ -548,7 +548,7 @@ def add_student():
     conn = get_db()
     cur = conn.cursor(dictionary=True)
 
-    # ✅ LOAD CLASSES FOR DROPDOWN
+    # LOAD CLASSES FOR DROPDOWN
     cur.execute("SELECT id, name, section FROM classes ORDER BY name, section")
     classes = cur.fetchall()
 
@@ -565,6 +565,7 @@ def add_student():
         photo_file = request.files.get("photo")
         photo_filename = None
 
+        # -------- IMAGE UPLOAD ----------
         if photo_file and photo_file.filename:
             if not allowed_file(photo_file.filename):
                 flash("Invalid image type")
@@ -573,10 +574,11 @@ def add_student():
             fname = secure_filename(photo_file.filename)
             uniq = f"{int(datetime.utcnow().timestamp())}_{fname}"
             dest = os.path.join(app.config["UPLOAD_FOLDER"], uniq)
+
             photo_file.save(dest)
             photo_filename = uniq
 
-        # ✅ INSERT USING class_id (NOT class name)
+        # -------- INSERT ----------
         cur.execute("""
             INSERT INTO students
             (name, class_id, dob, phone, parent_name, parent_phone, address, photo)
@@ -584,6 +586,10 @@ def add_student():
         """, (name, class_id, dob, phone, parent_name, parent_phone, address, photo_filename))
 
         conn.commit()
+
+        cur.close()
+        conn.close()
+
         flash("Student added successfully")
         return redirect(url_for("students_list"))
 
@@ -591,6 +597,7 @@ def add_student():
     conn.close()
 
     return render_template("add_student.html", classes=classes)
+
 
 @app.route("/students/edit/<int:student_id>", methods=["GET", "POST"])
 def edit_student(student_id):
