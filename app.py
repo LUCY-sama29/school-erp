@@ -572,11 +572,22 @@ def add_student():
                 return redirect(request.url)
 
             fname = secure_filename(photo_file.filename)
-            uniq = f"{int(datetime.utcnow().timestamp())}_{fname}"
-            dest = os.path.join(app.config["UPLOAD_FOLDER"], uniq)
 
-            photo_file.save(dest)
-            photo_filename = uniq
+            # Create class-wise folder
+            class_folder = os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                "students",
+                f"class_{class_id}"
+            )
+            os.makedirs(class_folder, exist_ok=True)
+
+            uniq = f"{int(datetime.utcnow().timestamp())}_{fname}"
+            save_path = os.path.join(class_folder, uniq)
+
+            photo_file.save(save_path)
+
+            # Store relative path in database
+            photo_filename = f"students/class_{class_id}/{uniq}"
 
         # -------- INSERT ----------
         cur.execute("""
@@ -586,7 +597,6 @@ def add_student():
         """, (name, class_id, dob, phone, parent_name, parent_phone, address, photo_filename))
 
         conn.commit()
-
         cur.close()
         conn.close()
 
@@ -595,8 +605,8 @@ def add_student():
 
     cur.close()
     conn.close()
-
     return render_template("add_student.html", classes=classes)
+
 
 @app.route("/students/edit/<int:student_id>", methods=["GET", "POST"])
 def edit_student(student_id):
