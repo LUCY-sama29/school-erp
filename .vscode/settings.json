@@ -1,0 +1,5 @@
+{
+    "code-auto-commit.commitTimeInterval": 120,
+    "git.allowNoVerifyCommit": false,
+    "code-auto-commit.autoPush": true
+}
