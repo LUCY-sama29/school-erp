@@ -120,24 +120,24 @@
         <label>Student Name</label>
         <input type="text" name="name" placeholder="Full name" required>
 
-    <div class="grid">
-        <div>
-            <label>Class</label>
-            <select name="class_id" required>
-                <option value="">-- Select Class --</option>
-                {% for c in classes %}
-                <option value="{{ c.id }}">
-                    Class {{ c.name }} {{ c.section }}
-                </option>
-                {% endfor %}
-            </select>
+        <div class="grid">
+            <div>
+                <label>Class</label>
+                <select name="class_id" required>
+                    <option value="">-- Select Class --</option>
+                    {% for c in classes %}
+                    <option value="{{ c.id }}">
+                        Class {{ c.name }} {{ c.section }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <div>
+                <label>Roll Number</label>
+                <input type="text" name="roll_no" placeholder="Optional">
+            </div>
         </div>
-
-        <div>
-            <label>Roll Number</label>
-            <input type="text" name="roll_no" placeholder="Optional">
-        </div>
-    </div>
 
     <label>Parent Name</label>
     <input type="text" name="parent_name" placeholder="Parent / Guardian name">
