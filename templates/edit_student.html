@@ -1,175 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Student</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
 
-<style>
-body{
-    margin:0;
-    font-family:"Segoe UI", Arial;
-    background:linear-gradient(135deg,#eef2ff,#f8fafc);
-}
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
 
-/* Header */
-.header{
-    background:linear-gradient(135deg,#2563eb,#1e40af);
-    color:white;
-    padding:28px;
-    text-align:center;
-    font-size:24px;
-    font-weight:600;
-}
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
 
-/* Card */
-.container{
-    max-width:760px;
-    margin:40px auto;
-    background:white;
-    padding:35px;
-    border-radius:14px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.08);
-}
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-label{
-    font-weight:600;
-    display:block;
-    margin-top:16px;
-    color:#374151;
-}
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
 
-input, select{
-    width:100%;
-    padding:12px;
-    margin-top:6px;
-    border-radius:8px;
-    border:1px solid #d1d5db;
-    font-size:14px;
-}
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
 
-input:focus, select:focus{
-    outline:none;
-    border-color:#2563eb;
-    box-shadow:0 0 0 2px rgba(37,99,235,.15);
-}
+        .row {
+            display: flex;
+            gap: 15px;
+        }
 
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-}
+        .row > div {
+            flex: 1;
+        }
 
-.photo-box{
-    text-align:center;
-    margin-top:25px;
-}
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
 
-.photo{
-    width:150px;
-    height:150px;
-    object-fit:cover;
-    border-radius:12px;
-    border:2px solid #e5e7eb;
-    margin-bottom:12px;
-}
+        button, a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-.actions{
-    margin-top:30px;
-    display:flex;
-    gap:12px;
-}
+        button {
+            background: #2563eb;
+            color: white;
+        }
 
-button, .cancel{
-    flex:1;
-    padding:13px;
-    border-radius:10px;
-    border:none;
-    font-weight:600;
-    cursor:pointer;
-    text-decoration:none;
-    text-align:center;
-}
+        button:hover {
+            background: #1e40af;
+        }
 
-button{
-    background:linear-gradient(135deg,#16a34a,#15803d);
-    color:white;
-}
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
 
-.cancel{
-    background:#e5e7eb;
-    color:#111827;
-}
-
-@media(max-width:650px){
-    .grid{
-        grid-template-columns:1fr;
-    }
-}
-</style>
+        a:hover {
+            background: #d1d5db;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="header">
-    ✏️ Edit Student Information
-</div>
-
 <div class="container">
+    <h2>Edit Student</h2>
 
-<form method="post" enctype="multipart/form-data">
+    <form method="post">
 
-<label>Student Name</label>
-<input type="text" name="name" value="{{ student.name }}" required>
+        <label>Student Name</label>
+        <input
+            type="text"
+            name="name"
+            value="{{ student.name }}"
+            required
+        >
 
-<div class="grid">
-    <div>
-        <label>Admission No</label>
-        <input type="text" name="admission_no" value="{{ student.admission_no }}">
-    </div>
+        <div class="row">
+            <div>
+                <label>Admission No</label>
+                <input
+                    type="text"
+                    name="admission_no"
+                    value="{{ student.admission_no }}"
+                >
+            </div>
 
-    <div>
-        <label>Roll No</label>
-        <input type="text" name="roll_no" value="{{ student.roll_no }}">
-    </div>
-</div>
+            <div>
+                <label>Roll No</label>
+                <input
+                    type="text"
+                    name="roll_no"
+                    value="{{ student.roll_no }}"
+                >
+            </div>
+        </div>
 
-<div class="grid">
-    <div>
-        <label>Class</label>
-        <select name="class_id" required>
-            {% for c in classes %}
-            <option value="{{ c.id }}" {% if c.id == student.class_id %}selected{% endif %}>
-                {{ c.name }} {{ c.section }}
-            </option>
-            {% endfor %}
-        </select>
-    </div>
+        <div class="row">
+            <div>
+                <label>Class</label>
+                <select name="class_id" required>
+                    {% for c in classes %}
+                        <option
+                            value="{{ c.id }}"
+                            {% if c.id == student.class_id %}selected{% endif %}
+                        >
+                            {{ c.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <div>
-        <label>Section</label>
-        <input type="text" name="section" value="{{ student.section or '' }}">
-    </div>
-</div>
+            <div>
+                <label>Section</label>
+                <input
+                    type="text"
+                    name="section"
+                    value="{{ student.section or '' }}"
+                >
+            </div>
+        </div>
 
-<label>Parent Name</label>
-<input type="text" name="parent_name" value="{{ student.parent_name }}">
+        <label>Parent Name</label>
+        <input
+            type="text"
+            name="parent_name"
+            value="{{ student.parent_name }}"
+        >
 
-<label>Parent Contact</label>
-<input type="text" name="parent_phone" value="{{ student.parent_phone }}">
+        <label>Parent Contact</label>
+        <input
+            type="text"
+            name="parent_phone"
+            value="{{ student.parent_phone }}"
+        >
 
-<!-- Photo preview -->
-<div class="photo-box">
-    <img src="{{ url_for('static', filename='uploads/' + (student.photo or 'default.png')) }}" class="photo">
-    <input type="file" name="photo" accept="image/*">
-</div>
+        <div class="actions">
+            <button type="submit">Update Student</button>
+            <a href="/students">Cancel</a>
+        </div>
 
-<div class="actions">
-    <button type="submit">Update Student</button>
-    <a href="/students" class="cancel">Cancel</a>
-</div>
-
-</form>
+    </form>
 </div>
 
 </body>
