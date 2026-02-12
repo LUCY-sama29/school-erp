@@ -678,7 +678,6 @@ def edit_student(student_id):
 
     return render_template("edit_student.html", student=student, classes=classes)
 
-
 @app.route("/students/delete/<int:student_id>", methods=["POST"])
 def delete_student(student_id):
     if "user" not in session:
