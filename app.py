@@ -369,10 +369,6 @@ def parent_dashboard():
 def logout():
     session.clear()
     return redirect("/")
-
-@app.route("/_ping")
-def _ping():
-    return "pong"
 # -------------------------------------------------------------------------
 
 
