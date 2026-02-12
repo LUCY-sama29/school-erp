@@ -111,66 +111,66 @@ button{
 
 <body>
 
-<div class="header">
-    ✏️ Edit Student Information
-</div>
-
-<div class="container">
-
-<form method="post" enctype="multipart/form-data">
-
-<label>Student Name</label>
-<input type="text" name="name" value="{{ student.name }}" required>
-
-<div class="grid">
-    <div>
-        <label>Admission No</label>
-        <input type="text" name="admission_no" value="{{ student.admission_no }}">
+    <div class="header">
+        ✏️ Edit Student Information
     </div>
-
-    <div>
-        <label>Roll No</label>
-        <input type="text" name="roll_no" value="{{ student.roll_no }}">
+    
+    <div class="container">
+    
+    <form method="post" enctype="multipart/form-data">
+    
+    <label>Student Name</label>
+    <input type="text" name="name" value="{{ student.name }}" required>
+    
+    <div class="grid">
+        <div>
+            <label>Admission No</label>
+            <input type="text" name="admission_no" value="{{ student.admission_no }}">
+        </div>
+    
+        <div>
+            <label>Roll No</label>
+            <input type="text" name="roll_no" value="{{ student.roll_no }}">
+        </div>
     </div>
-</div>
-
-<div class="grid">
-    <div>
-        <label>Class</label>
-        <select name="class_id" required>
-            {% for c in classes %}
-            <option value="{{ c.id }}" {% if c.id == student.class_id %}selected{% endif %}>
-                {{ c.name }} {{ c.section }}
-            </option>
-            {% endfor %}
-        </select>
+    
+    <div class="grid">
+        <div>
+            <label>Class</label>
+            <select name="class_id" required>
+                {% for c in classes %}
+                <option value="{{ c.id }}" {% if c.id == student.class_id %}selected{% endif %}>
+                    {{ c.name }} {{ c.section }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div>
+            <label>Section</label>
+            <input type="text" name="section" value="{{ student.section or '' }}">
+        </div>
     </div>
-
-    <div>
-        <label>Section</label>
-        <input type="text" name="section" value="{{ student.section or '' }}">
+    
+    <label>Parent Name</label>
+    <input type="text" name="parent_name" value="{{ student.parent_name }}">
+    
+    <label>Parent Contact</label>
+    <input type="text" name="parent_phone" value="{{ student.parent_phone }}">
+    
+    <!-- Photo preview -->
+    <div class="photo-box">
+        <img src="{{ url_for('static', filename='uploads/' + (student.photo or 'default.png')) }}" class="photo">
+        <input type="file" name="photo" accept="image/*">
     </div>
-</div>
-
-<label>Parent Name</label>
-<input type="text" name="parent_name" value="{{ student.parent_name }}">
-
-<label>Parent Contact</label>
-<input type="text" name="parent_phone" value="{{ student.parent_phone }}">
-
-<!-- Photo preview -->
-<div class="photo-box">
-    <img src="{{ url_for('static', filename='uploads/' + (student.photo or 'default.png')) }}" class="photo">
-    <input type="file" name="photo" accept="image/*">
-</div>
-
-<div class="actions">
-    <button type="submit">Update Student</button>
-    <a href="/students" class="cancel">Cancel</a>
-</div>
-
-</form>
-</div>
+    
+    <div class="actions">
+        <button type="submit">Update Student</button>
+        <a href="/students" class="cancel">Cancel</a>
+    </div>
+    
+    </form>
+    </div>
 
 </body>
 </html>
