@@ -548,24 +548,29 @@ def add_student():
     conn = get_db()
     cur = conn.cursor(dictionary=True)
 
-    # LOAD CLASSES FOR DROPDOWN
-    cur.execute("SELECT id, name, section FROM classes ORDER BY name, section")
+    # ---------- LOAD CLASSES ----------
+    cur.execute("""
+        SELECT id, name, section
+        FROM classes
+        ORDER BY name, section
+    """)
     classes = cur.fetchall()
 
     if request.method == "POST":
+
+        # ---------- FORM DATA ----------
         name = request.form.get("name", "").strip()
         class_id = request.form.get("class_id")
-
         dob = request.form.get("dob")
         phone = request.form.get("phone", "").strip()
         parent_name = request.form.get("parent_name", "").strip()
         parent_phone = request.form.get("parent_phone", "").strip()
         address = request.form.get("address", "").strip()
 
-        photo_file = request.files.get("photo")
         photo_filename = None
+        photo_file = request.files.get("photo")
 
-        # -------- IMAGE UPLOAD ----------
+        # ---------- IMAGE UPLOAD ----------
         if photo_file and photo_file.filename:
             if not allowed_file(photo_file.filename):
                 flash("Invalid image type")
@@ -586,15 +591,19 @@ def add_student():
 
             photo_file.save(save_path)
 
-            # Store relative path in database
+            # Store relative path in DB
             photo_filename = f"students/class_{class_id}/{uniq}"
 
-        # -------- INSERT ----------
+        # ---------- INSERT ----------
         cur.execute("""
             INSERT INTO students
             (name, class_id, dob, phone, parent_name, parent_phone, address, photo)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
-        """, (name, class_id, dob, phone, parent_name, parent_phone, address, photo_filename))
+        """, (
+            name, class_id, dob, phone,
+            parent_name, parent_phone,
+            address, photo_filename
+        ))
 
         conn.commit()
         cur.close()
