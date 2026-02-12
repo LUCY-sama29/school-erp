@@ -611,12 +611,21 @@ def add_student():
 def edit_student(student_id):
     if "user" not in session:
         return redirect("/")
+
     conn = get_db()
     cur = conn.cursor(dictionary=True)
 
+    # Load student
+    cur.execute("SELECT * FROM students WHERE id=%s", (student_id,))
+    student = cur.fetchone()
+
+    # IMPORTANT — load classes for dropdown
+    cur.execute("SELECT id, name, section FROM classes ORDER BY name, section")
+    classes = cur.fetchall()
+
     if request.method == "POST":
         name = request.form.get("name", "").strip()
-        cls = request.form.get("class", "").strip()
+        class_id = request.form.get("class_id")   # ← FIXED
         section = request.form.get("section", "").strip()
         dob = request.form.get("dob", None)
         phone = request.form.get("phone", "").strip()
@@ -625,45 +634,50 @@ def edit_student(student_id):
         address = request.form.get("address", "").strip()
 
         photo_file = request.files.get("photo")
-        if photo_file and photo_file.filename != "":
+
+        if photo_file and photo_file.filename:
             if not allowed_file(photo_file.filename):
                 flash("Invalid image type.")
                 return redirect(request.url)
-            # save new photo
+
             fname = secure_filename(photo_file.filename)
             uniq = f"{int(datetime.utcnow().timestamp())}_{fname}"
             dest = os.path.join(app.config["UPLOAD_FOLDER"], uniq)
             photo_file.save(dest)
+
             # delete old photo
-            cur.execute("SELECT photo FROM students WHERE id=%s", (student_id,))
-            old = cur.fetchone()
-            if old and old.get("photo"):
+            if student.get("photo"):
                 try:
-                    os.remove(os.path.join(app.config["UPLOAD_FOLDER"], old["photo"]))
-                except Exception:
+                    os.remove(os.path.join(app.config["UPLOAD_FOLDER"], student["photo"]))
+                except:
                     pass
-            # update photo filename
+
             cur.execute("UPDATE students SET photo=%s WHERE id=%s", (uniq, student_id))
 
-        cur.execute(
-            """UPDATE students SET name=%s, class=%s, section=%s, dob=%s, phone=%s,
-               parent_name=%s, parent_phone=%s, address=%s WHERE id=%s""",
-            (name, cls, section, dob, phone, parent_name, parent_phone, address, student_id)
-        )
+        # update main fields
+        cur.execute("""
+            UPDATE students
+            SET name=%s, class_id=%s, section=%s, dob=%s,
+                phone=%s, parent_name=%s, parent_phone=%s, address=%s
+            WHERE id=%s
+        """, (name, class_id, section, dob, phone, parent_name, parent_phone, address, student_id))
+
         conn.commit()
         cur.close()
         conn.close()
+
         flash("Student updated.")
         return redirect(url_for("students_list"))
 
-    cur.execute("SELECT * FROM students WHERE id=%s", (student_id,))
-    student = cur.fetchone()
     cur.close()
     conn.close()
+
     if not student:
         flash("Student not found.")
         return redirect(url_for("students_list"))
-    return render_template("edit_student.html", student=student)
+
+    return render_template("edit_student.html", student=student, classes=classes)
+
 
 @app.route("/students/delete/<int:student_id>", methods=["POST"])
 def delete_student(student_id):
