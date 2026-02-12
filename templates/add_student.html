@@ -112,54 +112,54 @@
 
 <body>
 
-<div class="wrapper">
-<h2>➕ Add New Student</h2>
-
-<form method="POST" enctype="multipart/form-data">
-
-<label>Student Name</label>
-<input type="text" name="name" placeholder="Full name" required>
-
-<div class="grid">
-    <div>
-        <label>Class</label>
-        <select name="class_id" required>
-            <option value="">-- Select Class --</option>
-            {% for c in classes %}
-            <option value="{{ c.id }}">
-                Class {{ c.name }} {{ c.section }}
-            </option>
-            {% endfor %}
-        </select>
+    <div class="wrapper">
+    <h2>➕ Add New Student</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+    
+    <label>Student Name</label>
+    <input type="text" name="name" placeholder="Full name" required>
+    
+    <div class="grid">
+        <div>
+            <label>Class</label>
+            <select name="class_id" required>
+                <option value="">-- Select Class --</option>
+                {% for c in classes %}
+                <option value="{{ c.id }}">
+                    Class {{ c.name }} {{ c.section }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div>
+            <label>Roll Number</label>
+            <input type="text" name="roll_no" placeholder="Optional">
+        </div>
     </div>
-
-    <div>
-        <label>Roll Number</label>
-        <input type="text" name="roll_no" placeholder="Optional">
+    
+    <label>Parent Name</label>
+    <input type="text" name="parent_name" placeholder="Parent / Guardian name">
+    
+    <label>Parent Phone</label>
+    <input type="text" name="parent_phone" placeholder="+91XXXXXXXXXX">
+    
+    <label>Date of Birth</label>
+    <input type="date" name="dob">
+    
+    <div class="photo-box">
+        <label>Upload Student Photo</label>
+        <input type="file" name="photo" accept="image/*">
     </div>
-</div>
-
-<label>Parent Name</label>
-<input type="text" name="parent_name" placeholder="Parent / Guardian name">
-
-<label>Parent Phone</label>
-<input type="text" name="parent_phone" placeholder="+91XXXXXXXXXX">
-
-<label>Date of Birth</label>
-<input type="date" name="dob">
-
-<div class="photo-box">
-    <label>Upload Student Photo</label>
-    <input type="file" name="photo" accept="image/*">
-</div>
-
-<div class="actions">
-    <button type="submit">Save Student</button>
-    <a href="/students" class="cancel">Cancel</a>
-</div>
-
-</form>
-</div>
+    
+    <div class="actions">
+        <button type="submit">Save Student</button>
+        <a href="/students" class="cancel">Cancel</a>
+    </div>
+    
+    </form>
+    </div>
 
 </body>
 </html>
