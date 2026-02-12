@@ -6,106 +6,106 @@
 <title>Edit Student</title>
 
 <style>
-body{
-    margin:0;
-    font-family:"Segoe UI", Arial;
-    background:linear-gradient(135deg,#eef2ff,#f8fafc);
-}
-
-/* Header */
-.header{
-    background:linear-gradient(135deg,#2563eb,#1e40af);
-    color:white;
-    padding:28px;
-    text-align:center;
-    font-size:24px;
-    font-weight:600;
-}
-
-/* Card */
-.container{
-    max-width:760px;
-    margin:40px auto;
-    background:white;
-    padding:35px;
-    border-radius:14px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.08);
-}
-
-label{
-    font-weight:600;
-    display:block;
-    margin-top:16px;
-    color:#374151;
-}
-
-input, select{
-    width:100%;
-    padding:12px;
-    margin-top:6px;
-    border-radius:8px;
-    border:1px solid #d1d5db;
-    font-size:14px;
-}
-
-input:focus, select:focus{
-    outline:none;
-    border-color:#2563eb;
-    box-shadow:0 0 0 2px rgba(37,99,235,.15);
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-}
-
-.photo-box{
-    text-align:center;
-    margin-top:25px;
-}
-
-.photo{
-    width:150px;
-    height:150px;
-    object-fit:cover;
-    border-radius:12px;
-    border:2px solid #e5e7eb;
-    margin-bottom:12px;
-}
-
-.actions{
-    margin-top:30px;
-    display:flex;
-    gap:12px;
-}
-
-button, .cancel{
-    flex:1;
-    padding:13px;
-    border-radius:10px;
-    border:none;
-    font-weight:600;
-    cursor:pointer;
-    text-decoration:none;
-    text-align:center;
-}
-
-button{
-    background:linear-gradient(135deg,#16a34a,#15803d);
-    color:white;
-}
-
-.cancel{
-    background:#e5e7eb;
-    color:#111827;
-}
-
-@media(max-width:650px){
-    .grid{
-        grid-template-columns:1fr;
+    body{
+        margin:0;
+        font-family:"Segoe UI", Arial;
+        background:linear-gradient(135deg,#eef2ff,#f8fafc);
     }
-}
+    
+    /* Header */
+    .header{
+        background:linear-gradient(135deg,#2563eb,#1e40af);
+        color:white;
+        padding:28px;
+        text-align:center;
+        font-size:24px;
+        font-weight:600;
+    }
+    
+    /* Card */
+    .container{
+        max-width:760px;
+        margin:40px auto;
+        background:white;
+        padding:35px;
+        border-radius:14px;
+        box-shadow:0 15px 40px rgba(0,0,0,0.08);
+    }
+    
+    label{
+        font-weight:600;
+        display:block;
+        margin-top:16px;
+        color:#374151;
+    }
+    
+    input, select{
+        width:100%;
+        padding:12px;
+        margin-top:6px;
+        border-radius:8px;
+        border:1px solid #d1d5db;
+        font-size:14px;
+    }
+    
+    input:focus, select:focus{
+        outline:none;
+        border-color:#2563eb;
+        box-shadow:0 0 0 2px rgba(37,99,235,.15);
+    }
+    
+    .grid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:18px;
+    }
+    
+    .photo-box{
+        text-align:center;
+        margin-top:25px;
+    }
+    
+    .photo{
+        width:150px;
+        height:150px;
+        object-fit:cover;
+        border-radius:12px;
+        border:2px solid #e5e7eb;
+        margin-bottom:12px;
+    }
+    
+    .actions{
+        margin-top:30px;
+        display:flex;
+        gap:12px;
+    }
+    
+    button, .cancel{
+        flex:1;
+        padding:13px;
+        border-radius:10px;
+        border:none;
+        font-weight:600;
+        cursor:pointer;
+        text-decoration:none;
+        text-align:center;
+    }
+    
+    button{
+        background:linear-gradient(135deg,#16a34a,#15803d);
+        color:white;
+    }
+    
+    .cancel{
+        background:#e5e7eb;
+        color:#111827;
+    }
+    
+    @media(max-width:650px){
+        .grid{
+            grid-template-columns:1fr;
+        }
+    }
 </style>
 </head>
 <body>
