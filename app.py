@@ -525,16 +525,21 @@ def students_list():
     cur = conn.cursor(dictionary=True)
 
     cur.execute("""
-        SELECT 
+        SELECT
             s.id,
             s.name,
-            c.name AS class_name
+            s.admission_no,
+            s.roll_no,
+            s.parent_name,
+            c.name AS class_name,
+            c.section
         FROM students s
         LEFT JOIN classes c ON s.class_id = c.id
         ORDER BY s.id DESC
     """)
 
     students = cur.fetchall()
+
     cur.close()
     conn.close()
 
