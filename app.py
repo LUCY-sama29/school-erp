@@ -404,15 +404,15 @@ def add_user():
         username = request.form.get("username", "").strip().lower()
         password = request.form.get("password", "").strip()
         role = request.form.get("role", "").strip().lower()
-        name = request.form.get("name", username)  # optional name
-
-        allowed_roles = ("admin", "teacher", "student", "parent")
-        if role not in allowed_roles:
-            flash("Invalid role selected.")
-            return redirect(url_for("add_user"))
+        name = request.form.get("name", "").strip()
 
         if not username or not password:
             flash("Username and password are required.")
+            return redirect(url_for("add_user"))
+
+        allowed_roles = ("admin", "teacher", "student", "parent")
+        if role not in allowed_roles:
+            flash("Invalid role.")
             return redirect(url_for("add_user"))
 
         hashed_password = generate_password_hash(password)
@@ -420,35 +420,33 @@ def add_user():
         conn = get_db()
         cur = conn.cursor()
 
-        # prevent duplicate usernames
+        # prevent duplicate username
         cur.execute("SELECT id FROM users WHERE username=%s", (username,))
         if cur.fetchone():
             flash("Username already exists.")
-            cur.close()
-            conn.close()
             return redirect(url_for("add_user"))
 
-        # -------- INSERT USER ----------
-        cur.execute(
-            "INSERT INTO users (username, password, role) VALUES (%s, %s, %s)",
-            (username, hashed_password, role)
-        )
-        conn.commit()
+        # -------- CREATE USER ----------
+        cur.execute("""
+            INSERT INTO users (username, password, role)
+            VALUES (%s, %s, %s)
+        """, (username, hashed_password, role))
 
-        user_id = cur.lastrowid  # 🔥 get new user id
+        conn.commit()
+        user_id = cur.lastrowid
 
         # -------- AUTO CREATE STUDENT ----------
         if role == "student":
             cur.execute("""
                 INSERT INTO students (name, user_id)
                 VALUES (%s, %s)
-            """, (name, user_id))
+            """, (name or username, user_id))
             conn.commit()
 
         cur.close()
         conn.close()
 
-        flash("User added successfully")
+        flash("User created successfully")
         return redirect(url_for("users"))
 
     return render_template("add_user.html")
