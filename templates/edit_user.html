@@ -1,27 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Edit User</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit User</title>
+
+<style>
+body{
+    margin:0;
+    font-family:"Segoe UI", Arial;
+    background:linear-gradient(135deg,#eef2ff,#f8fafc);
+}
+
+/* Header */
+.header{
+    background:linear-gradient(135deg,#7c3aed,#5b21b6);
+    color:white;
+    padding:28px;
+    text-align:center;
+    font-size:24px;
+    font-weight:600;
+}
+
+/* Card */
+.container{
+    max-width:700px;
+    margin:40px auto;
+    background:white;
+    padding:35px;
+    border-radius:14px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+}
+
+label{
+    font-weight:600;
+    display:block;
+    margin-top:16px;
+    color:#374151;
+}
+
+input, select{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border-radius:8px;
+    border:1px solid #d1d5db;
+    font-size:14px;
+}
+
+input:focus, select:focus{
+    outline:none;
+    border-color:#7c3aed;
+    box-shadow:0 0 0 2px rgba(124,58,237,.15);
+}
+
+/* Role badge preview */
+.role-preview{
+    margin-top:10px;
+    font-size:13px;
+    color:#6b7280;
+}
+
+/* Actions */
+.actions{
+    margin-top:30px;
+    display:flex;
+    gap:12px;
+}
+
+button, .cancel{
+    flex:1;
+    padding:13px;
+    border-radius:10px;
+    border:none;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    text-align:center;
+}
+
+button{
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:white;
+}
+
+button:hover{
+    transform:translateY(-1px);
+    box-shadow:0 8px 18px rgba(22,163,74,.25);
+}
+
+.cancel{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.cancel:hover{
+    background:#d1d5db;
+}
+</style>
 </head>
+
 <body>
 
-<h2>Edit User</h2>
+<div class="header">
+    👤 Edit User Account
+</div>
 
-<form method="post">
-    <label>Username</label><br>
-    <input type="text" name="username" value="{{ user.username }}" required><br><br>
+<div class="container">
 
-    <label>Role</label><br>
-    <select name="role">
-        <option value="teacher">Teacher</option>
-        <option value="student">Student</option>
-        <option value="parent">Parent</option>
-        <option value="admin">Admin</option>
-    </select><br><br>
+<form method="POST">
 
-    <button type="submit">Save</button>
-    <a href="/users">Cancel</a>
+<label>Username</label>
+<input type="text" name="username" value="{{ user.username }}" required>
+
+<label>Full Name</label>
+<input type="text" name="name" value="{{ user.name or '' }}">
+
+<label>Role</label>
+<select name="role" required>
+    <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+    <option value="teacher" {% if user.role == 'teacher' %}selected{% endif %}>Teacher</option>
+    <option value="student" {% if user.role == 'student' %}selected{% endif %}>Student</option>
+    <option value="parent" {% if user.role == 'parent' %}selected{% endif %}>Parent</option>
+</select>
+
+<div class="role-preview">
+    Select the role carefully — it controls system access.
+</div>
+
+<label>Status</label>
+<select name="status">
+    <option value="active" {% if user.status == 'active' %}selected{% endif %}>Active</option>
+    <option value="inactive" {% if user.status == 'inactive' %}selected{% endif %}>Inactive</option>
+</select>
+
+<label>Change Password (optional)</label>
+<input type="password" name="password" placeholder="Leave blank to keep current password">
+
+<div class="actions">
+    <button type="submit">Update User</button>
+    <a href="/users" class="cancel">Cancel</a>
+</div>
+
 </form>
+
+</div>
 
 </body>
 </html>
