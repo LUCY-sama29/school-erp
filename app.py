@@ -404,6 +404,7 @@ def add_user():
         username = request.form.get("username", "").strip().lower()
         password = request.form.get("password", "").strip()
         role = request.form.get("role", "").strip().lower()
+        name = request.form.get("name", username)  # optional name
 
         allowed_roles = ("admin", "teacher", "student", "parent")
         if role not in allowed_roles:
@@ -427,11 +428,23 @@ def add_user():
             conn.close()
             return redirect(url_for("add_user"))
 
+        # -------- INSERT USER ----------
         cur.execute(
             "INSERT INTO users (username, password, role) VALUES (%s, %s, %s)",
             (username, hashed_password, role)
         )
         conn.commit()
+
+        user_id = cur.lastrowid  # 🔥 get new user id
+
+        # -------- AUTO CREATE STUDENT ----------
+        if role == "student":
+            cur.execute("""
+                INSERT INTO students (name, user_id)
+                VALUES (%s, %s)
+            """, (name, user_id))
+            conn.commit()
+
         cur.close()
         conn.close()
 
