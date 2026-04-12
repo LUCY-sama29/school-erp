@@ -38,6 +38,7 @@ from mysql.connector import Error
 # Security / Auth
 # =========================
 import bcrypt
+import reportlab
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
